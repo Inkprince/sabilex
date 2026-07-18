@@ -332,7 +332,7 @@ function InputBox({
   isStreaming: boolean;
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
 }) {
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
