@@ -7,11 +7,11 @@ import ChatMessage, { type ChatMsg, type Source } from '@/components/ChatMessage
 import { useChat } from '@/context/ChatContext';
 
 const SUGGESTIONS = [
-  'What are my rights if police arrest me?',
-  'Can my employer fire me without notice?',
-  'Freedom of expression in Nigeria',
-  'Right to remain silent when arrested',
-  'Citizenship by birth requirements',
+  'What are the fundamental objectives of the government?',
+  'Does the state provide free education?',
+  'What is the government\\'s duty regarding the environment?',
+  'Duties of a Nigerian citizen under Chapter 2',
+  'What are the economic objectives of the State?',
 ];
 
 export default function HomePage() {

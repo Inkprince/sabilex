@@ -175,7 +175,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <div className="hidden lg:flex items-center justify-center flex-1">
               <div className="bg-white border border-zinc-100 rounded-full px-5 py-2.5 flex items-center gap-2 text-sm shadow-[0_2px_8px_rgba(0,0,0,0.04)] text-zinc-700 cursor-default whitespace-nowrap">
                 <SparklesIcon size={16} />
-                <span>AI-powered Nigerian legal assistant</span>
+                <span>AI-powered Nigerian legal assistant — Chapter II Focus</span>
               </div>
             </div>
 
