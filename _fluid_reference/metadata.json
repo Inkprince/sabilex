@@ -1,0 +1,6 @@
+{
+  "name": "Fluid UI Clone",
+  "description": "A direct clone of the Fluid AI interface focusing on layout and design details.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
