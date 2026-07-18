@@ -18,7 +18,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useChat } from '@/context/ChatContext';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -179,15 +179,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            {/* Auth Buttons */}
-            <div className="flex-1 flex justify-end gap-2 md:gap-3">
-              <button className="bg-black text-white px-4 md:px-5 py-2 rounded-full text-[13px] md:text-sm font-medium hover:bg-zinc-800 transition-colors shadow-sm">
-                Register
-              </button>
-              <button className="bg-zinc-100/80 hover:bg-zinc-200 text-black px-4 md:px-5 py-2 rounded-full text-[13px] md:text-sm font-medium transition-colors shadow-sm">
-                Login
-              </button>
-            </div>
+            {/* Empty space to balance flex layout since auth is removed */}
+            <div className="flex-1" />
           </div>
 
           {/* Center Stage */}

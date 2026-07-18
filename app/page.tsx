@@ -334,19 +334,39 @@ function InputBox({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // We only support text-based files for now (txt, md, csv, etc)
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result;
-      if (typeof text === 'string') {
-        setInput(input + (input.trim() ? '\n\n' : '') + `--- Attached File: ${file.name} ---\n${text.slice(0, 3000)}${text.length > 3000 ? '\n...[truncated]' : ''}\n------------------------\n`);
+    const name = file.name.toLowerCase();
+    
+    // Server-side parsing for PDF and DOCX
+    if (name.endsWith('.pdf') || name.endsWith('.docx')) {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      try {
+        const res = await fetch('/api/parse-file', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (res.ok && data.text) {
+          setInput(input + (input.trim() ? '\n\n' : '') + `--- Attached File: ${file.name} ---\n${data.text.slice(0, 5000)}${data.text.length > 5000 ? '\n...[truncated]' : ''}\n------------------------\n`);
+        } else {
+          alert(data.error || 'Failed to parse file');
+        }
+      } catch (err) {
+        alert('Error connecting to parsing server');
       }
-    };
-    reader.readAsText(file);
+    } else {
+      // Local parsing for text-based files
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target?.result;
+        if (typeof text === 'string') {
+          setInput(input + (input.trim() ? '\n\n' : '') + `--- Attached File: ${file.name} ---\n${text.slice(0, 5000)}${text.length > 5000 ? '\n...[truncated]' : ''}\n------------------------\n`);
+        }
+      };
+      reader.readAsText(file);
+    }
     e.target.value = ''; // Reset
   };
 
@@ -373,7 +393,7 @@ function InputBox({
               type="file"
               ref={fileInputRef}
               onChange={handleFileChange}
-              accept=".txt,.md,.csv,.json"
+              accept=".txt,.md,.csv,.json,.pdf,.docx"
               className="hidden"
             />
             <button
@@ -398,18 +418,11 @@ function InputBox({
           </div>
         </div>
         {/* Input Footer */}
-        <div className="bg-[#FAF9F6] px-4 md:px-5 py-2.5 md:py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 text-[11px] md:text-xs text-zinc-500">
+        <div className="bg-[#FAF9F6] px-4 md:px-5 py-2.5 md:py-3 border-t border-zinc-100 flex justify-center text-[11px] md:text-xs text-zinc-500">
           <div className="flex items-center gap-1.5 md:gap-2">
             <InformationCircleIcon size={14} className="flex-shrink-0" />
             <span className="truncate">Grounded in Nigerian constitutional and statutory law</span>
           </div>
-          <button
-            type="button"
-            className="font-medium text-zinc-700 flex items-center gap-1.5 hover:text-black transition-colors ml-5 sm:ml-0"
-          >
-            <span className="w-1.5 h-1.5 rounded-full border border-current opacity-60 inline-block" />
-            SabiLex Pro
-          </button>
         </div>
       </form>
     </div>
